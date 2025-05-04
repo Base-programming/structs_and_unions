@@ -12,21 +12,26 @@ class Address {
     int apartment_number{};
 
 public:
+    Address(std::string set_city, std::string set_street, int set_house_number, int set_apartment_number):
+        city{set_city}, street{set_street}, house_number{set_house_number}, apartment_number{set_apartment_number}
+    {
+        ;
+    }
     void address_out(std::ofstream &file_out) {
         file_out << city << ", " << street << ", " << house_number << ", " << apartment_number << std::endl;
     }
-    void set_city(std::string city){
-        this->city = city;
-    }
-    void set_street(std::string street) {
-        this->street = street;
-    }
-    void set_house_number(int number) {
-        this->house_number = number;
-    }
-    void set_appartment_number(int number) {
-        this->apartment_number = number;
-    }
+    //void set_city(std::string city){
+    //    this->city = city;
+    //}
+    //void set_street(std::string street) {
+    //    this->street = street;
+    //}
+    //void set_house_number(int number) {
+    //    this->house_number = number;
+    //}
+    //void set_appartment_number(int number) {
+    //    this->apartment_number = number;
+    //}
 };
 
 int main()
@@ -40,20 +45,22 @@ int main()
         std::string line;
         if (std::getline(file_in, line)) {
             int obj_cnt = std::stoi(line);
-            Address* address_objs = new Address[obj_cnt];
+            Address** address_objs = new Address* [obj_cnt];
             for (int i = 0; i < obj_cnt; i++) {
+                std::string city{};
+                std::string street{};
+                int house_number{};
+                int apartment_number{};
+
+                std::getline(file_in, city);
+                std::getline(file_in, street);
                 if (std::getline(file_in, line)) {
-                    address_objs[i].set_city(line);
+                    house_number = std::stoi(line);
                 }
                 if (std::getline(file_in, line)) {
-                    address_objs[i].set_street(line);
+                    apartment_number = std::stoi(line);
                 }
-                if (std::getline(file_in, line)) {
-                    address_objs[i].set_house_number(std::stoi(line));
-                }
-                if (std::getline(file_in, line)) {
-                    address_objs[i].set_appartment_number(std::stoi(line));
-                }
+                address_objs[i] = new Address(city, street, house_number, apartment_number);
             }
 
             std::ofstream file_out{ "../out.txt" };
@@ -63,7 +70,7 @@ int main()
 
                 file_out << obj_cnt << std::endl;
                 for (int i = 0; i < obj_cnt; i++) {
-                    address_objs[i].address_out(file_out);
+                    address_objs[i]->address_out(file_out);
                 }
 
                 file_out.close();
