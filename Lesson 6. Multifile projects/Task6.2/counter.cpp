@@ -1,17 +1,17 @@
 #include "counter.h"
 
-Counter::Counter() : __value(1)
+Counter::Counter() : value_(1)
     {
     }
-Counter::Counter(int value) : __value(value)
+Counter::Counter(int value) : value_(value)
     {
     }
     void Counter::increment() {
-        __value++;
+        value_++;
     }
     void Counter::decrement() {
-        __value--;
+        value_--;
     }
     int Counter::get_value() {
-        return __value;
+        return value_;
     }

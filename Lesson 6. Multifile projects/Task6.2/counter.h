@@ -2,7 +2,7 @@
 
 class Counter {
 
-    int __value;
+    int value_;
 
 public:
 
