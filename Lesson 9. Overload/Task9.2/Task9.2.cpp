@@ -9,11 +9,9 @@ private:
 	int numerator_;
 	int denominator_;
 
-public:
-	Fraction(int numerator, int denominator)
-	{
-		numerator_ = numerator;
-		denominator_ = denominator;
+	double to_decimal() {
+		double decimal = static_cast<double>(numerator_) / static_cast<double>(denominator_);
+		return decimal;
 	}
 
 	unsigned int greatest_common_divisor(unsigned int a, unsigned int b) {
@@ -34,14 +32,22 @@ public:
 			numerator_ *= -1;
 		}
 	}
+
+public:
+	Fraction(int numerator, int denominator)
+	{
+		numerator_ = numerator;
+		denominator_ = denominator;
+		simplify();
+	}
 	bool operator==(Fraction fract_right) {
-		return ((((double)numerator_ / denominator_) == ((double)fract_right.numerator_ / fract_right.denominator_)) ? true : false);
+		return ((std::abs(to_decimal() - fract_right.to_decimal()) <= std::numeric_limits<double>::epsilon()) ? true : false);
 	}
 	bool operator!=(Fraction fract_right) {
 		return (!(*this == fract_right));
 	}
 	bool operator<(Fraction fract_right) {
-		return ((((double)numerator_ / denominator_) < ((double)fract_right.numerator_ / fract_right.denominator_)) ? true : false);
+		return ((to_decimal() < fract_right.to_decimal()) ? true : false);
 	}
 	bool operator>(Fraction fract_right) {
 		return (fract_right < *this);
@@ -58,25 +64,21 @@ public:
 	Fraction operator+(const Fraction& fract_right) {
 		Fraction fraction(this->numerator_ * fract_right.denominator_ + fract_right.numerator_ * this->denominator_,
 			this->denominator_ * fract_right.denominator_);
-		fraction.simplify();
 		return fraction;
 	}
 	Fraction operator-(const Fraction& fract_right) {
 		Fraction fraction(this->numerator_ * fract_right.denominator_ - fract_right.numerator_ * this->denominator_,
 			this->denominator_ * fract_right.denominator_);
-		fraction.simplify();
 		return fraction;
 	}
 	Fraction operator*(const Fraction& fract_right) {
 		Fraction fraction(this->numerator_ * fract_right.numerator_,
 			this->denominator_ * fract_right.denominator_);
-		fraction.simplify();
 		return fraction;
 	}
 	Fraction operator/(const Fraction& fract_right) {
 		Fraction fraction(this->numerator_ * fract_right.denominator_,
 			this->denominator_ * fract_right.numerator_);
-		fraction.simplify();
 		return fraction;
 	}
 	Fraction& operator++() {
